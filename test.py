@@ -1,5 +1,6 @@
+from pyspark import SparkContext
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import round, cast, col, when
+from pyspark.sql.functions import round
 
 
 spark = SparkSession.builder.getOrCreate()
@@ -29,8 +30,7 @@ df_elections_modified = df_elections.drop(
 )
 test_elections= df_elections_modified
 
-# Conversion du fichier en DataFrame
-#test_elections= spark.createDataFrame(test_elections)
+
 # Changement du nom de la colonne
 test_elections= test_elections.withColumnRenamed("CodeDépartement","code")
 # Changement du type de la colonne code du format string au format integer
@@ -38,8 +38,6 @@ test_elections= test_elections.withColumn("code",test_elections.code.cast("Integ
 
 df_chomage = spark.read.csv("chomage.csv", header="True", inferSchema=True)
 test_chomage = df_chomage
-# Conversion du fichier en DataFrame
-#test_chomage= spark.createDataFrame(test_chomage)
 
 # Changement du nom de la colonne
 test_chomage= test_chomage.withColumnRenamed("Code","code")
@@ -63,33 +61,29 @@ test_chomage= test_chomage.drop('T1_1982', 'T2_1982', 'T3_1982', 'T4_1982', 'T1_
 
 df_niveauvie = spark.read.csv("niveau_vie.csv", header="True", inferSchema=True)
 test_niveauvie = df_niveauvie
-# Conversion du fichier en DataFrame
-# test_niveauvie= spark.createDataFrame(test_niveauvie)
+
 
 # Changement du nom de la colonne
 test_niveauvie= test_niveauvie.withColumnRenamed("Code","code")
 # Changement du type de la colonne code du format string au format integer
 test_niveauvie= test_niveauvie.withColumn("code",test_niveauvie.code.cast("Integer"))
 
-# print('>>>>>>>>>>>>>>>>>>>>>>>> MON ttttteeee >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', test_elections.head(2))
-# print('>>>>>>>>>>>>>>>>>>>>>>>> MA testtttttttttt >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', test_niveauvie.head(1))
-#print('>>>>>>>>>>>>>>>>>>>>>>>> MES test >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', test_chomage.head(1))
+
 df = test_elections.join(test_chomage, on="code").join(test_niveauvie, on="code")
 
-df = df.withColumn("colonne_float", when(col("ARTHAUD.exp").isNull(), 0.0).otherwise(cast("ARTHAUD.exp", "float")))
+# Fonction permettant d'arrondir à la deuxième décimale les résultats de chaque candidats
+df = df.withColumn("ARTHAUD_exp", round("ARTHAUD_exp", 2))
+df = df.withColumn("ROUSSEL_exp", round("ROUSSEL_exp", 2))
+df = df.withColumn("MACRON_exp", round("MACRON_exp", 2))
+df = df.withColumn("LASSALLE_exp", round("LASSALLE_exp", 2))
+df = df.withColumn("LE PEN_exp", round("LE PEN_exp", 2))
+df = df.withColumn("ZEMMOUR_exp", round("ZEMMOUR_exp", 2))
+df = df.withColumn("MÉLENCHON_exp", round("MÉLENCHON_exp", 2))
+df = df.withColumn("HIDALGO_exp", round("HIDALGO_exp", 2))
+df = df.withColumn("JADOT_exp", round("JADOT_exp", 2))
+df = df.withColumn("PÉCRESSE_exp", round("PÉCRESSE_exp", 2))
+df = df.withColumn("POUTOU_exp", round("POUTOU_exp", 2))
+df = df.withColumn("DUPONT-AIGNAN_exp", round("DUPONT-AIGNAN_exp", 2))
 
-# df = df.withColumn("ARTHAUD.exp", round("ARTHAUD.exp", 2))
-# df = df.withColumn("ROUSSEL.exp", round("ROUSSEL.exp", 2))
-# df = df.withColumn("MACRON.exp", round("MACRON.exp", 2))
-# df = df.withColumn("LASSALLE.exp", round("LASSALLE.exp", 2))
-# df = df.withColumn("LE PEN.exp", round("LE PEN.exp", 2))
-# df = df.withColumn("ZEMMOUR.exp", round("ZEMMOUR.exp", 2))
-# df = df.withColumn("MÉLENCHON.exp", round("MÉLENCHON.exp", 2))
-# df = df.withColumn("HIDALGO.exp", round("HIDALGO.exp", 2))
-# df = df.withColumn("JADOT.exp", round("JADOT.exp", 2))
-# df = df.withColumn("PÉCRESSE.exp", round("PÉCRESSE.exp", 2))
-# df = df.withColumn("POUTOU.exp", round("POUTOU.exp", 2))
-# df = df.withColumn("DUPONT-AIGNAN.exp", round("DUPONT-AIGNAN.exp", 2))
 
-
-print('>>>>>>>>>>>>>>>>>>>>>>>> MON ttttteeee >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', df.dtypes)
+print('>>>>>>>>>>>>>>>>>>>>>>>> MON ttttteeee >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', df.head(1))
