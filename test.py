@@ -1,3 +1,4 @@
+from importlib.machinery import all_suffixes
 from pyspark import SparkContext
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import round
@@ -93,3 +94,5 @@ df = df.withColumn("DUPONT-AIGNAN.exp", round("DUPONT-AIGNAN.exp", 2))
 
 
 print('>>>>>>>>>>>>>>>>>>>>>>>> MON ttttteeee >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', df.head(10))
+
+# Test alex
