@@ -1,7 +1,5 @@
-from importlib.machinery import all_suffixes
-from pyspark import SparkContext
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import round
+from pyspark.sql.functions import round, cast, col, when
 
 
 spark = SparkSession.builder.getOrCreate()
@@ -78,21 +76,20 @@ test_niveauvie= test_niveauvie.withColumn("code",test_niveauvie.code.cast("Integ
 #print('>>>>>>>>>>>>>>>>>>>>>>>> MES test >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', test_chomage.head(1))
 df = test_elections.join(test_chomage, on="code").join(test_niveauvie, on="code")
 
+df = df.withColumn("colonne_float", when(col("ARTHAUD.exp").isNull(), 0.0).otherwise(cast("ARTHAUD.exp", "float")))
 
-df = df.withColumn("ARTHAUD.exp", round("ARTHAUD.exp", 2))
-df = df.withColumn("ROUSSEL.exp", round("ROUSSEL.exp", 2))
-df = df.withColumn("MACRON.exp", round("MACRON.exp", 2))
-df = df.withColumn("LASSALLE.exp", round("LASSALLE.exp", 2))
-df = df.withColumn("LE PEN.exp", round("LE PEN.exp", 2))
-df = df.withColumn("ZEMMOUR.exp", round("ZEMMOUR.exp", 2))
-df = df.withColumn("MÉLENCHON.exp", round("MÉLENCHON.exp", 2))
-df = df.withColumn("HIDALGO.exp", round("HIDALGO.exp", 2))
-df = df.withColumn("JADOT.exp", round("JADOT.exp", 2))
-df = df.withColumn("PÉCRESSE.exp", round("PÉCRESSE.exp", 2))
-df = df.withColumn("POUTOU.exp", round("POUTOU.exp", 2))
-df = df.withColumn("DUPONT-AIGNAN.exp", round("DUPONT-AIGNAN.exp", 2))
+# df = df.withColumn("ARTHAUD.exp", round("ARTHAUD.exp", 2))
+# df = df.withColumn("ROUSSEL.exp", round("ROUSSEL.exp", 2))
+# df = df.withColumn("MACRON.exp", round("MACRON.exp", 2))
+# df = df.withColumn("LASSALLE.exp", round("LASSALLE.exp", 2))
+# df = df.withColumn("LE PEN.exp", round("LE PEN.exp", 2))
+# df = df.withColumn("ZEMMOUR.exp", round("ZEMMOUR.exp", 2))
+# df = df.withColumn("MÉLENCHON.exp", round("MÉLENCHON.exp", 2))
+# df = df.withColumn("HIDALGO.exp", round("HIDALGO.exp", 2))
+# df = df.withColumn("JADOT.exp", round("JADOT.exp", 2))
+# df = df.withColumn("PÉCRESSE.exp", round("PÉCRESSE.exp", 2))
+# df = df.withColumn("POUTOU.exp", round("POUTOU.exp", 2))
+# df = df.withColumn("DUPONT-AIGNAN.exp", round("DUPONT-AIGNAN.exp", 2))
 
 
-print('>>>>>>>>>>>>>>>>>>>>>>>> MON ttttteeee >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', df.head(10))
-
-# Test alex
+print('>>>>>>>>>>>>>>>>>>>>>>>> MON ttttteeee >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', df.dtypes)
