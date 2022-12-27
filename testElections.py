@@ -3,6 +3,8 @@ from pyspark.sql import SparkSession
 
 spark = SparkSession.builder.getOrCreate()
 
+#testOumar
+
 df_elections = spark.read.csv("election_22.csv", header="True", inferSchema=True)
 df_elections_modified = df_elections.drop(
     "Abstentions_ins",
