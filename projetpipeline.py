@@ -63,6 +63,9 @@ df_chomage= df_chomage.drop('T1_1982', 'T2_1982', 'T3_1982', 'T4_1982', 'T1_1983
          'T2_2021', 'T3_2021', 'T4_2021')
 
 
+# Suppression de la colonne libellé car en doublon 
+df_chomage = df_chomage.drop('Libellé')
+
 
 # Changement du nom de la colonne des trimestres en indiquant qu'il s'agit des trimestres de chômage en 2022
 df_chomage = df_chomage.withColumnRenamed("T1_2022","TxChômage_T1_22")
@@ -76,6 +79,9 @@ df_niveau_de_vie = df_niveau_de_vie.withColumnRenamed("Code","code")
 
 # Changement du type de la colonne code du format string au format integer
 df_niveau_de_vie= df_niveau_de_vie.withColumn("code",df_niveau_de_vie.code.cast("Integer"))
+
+# Suppression de la colonne libellé car en doublon 
+df_niveau_de_vie = df_niveau_de_vie.drop('Libellé')
 
 # Fusion des 3 différents DataFrames sur la Key "code" représentant le département 
 df = df_elections.join(df_chomage, on="code").join(df_niveau_de_vie, on="code")
@@ -95,5 +101,4 @@ df = df.withColumn("PÉCRESSE_exp", round("PÉCRESSE_exp", 2))
 df = df.withColumn("POUTOU_exp", round("POUTOU_exp", 2))
 df = df.withColumn("DUPONT-AIGNAN_exp", round("DUPONT-AIGNAN_exp", 2))
 
-
-print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', df.head(1))
+df.coalesce(1).write.csv("/home/alexandre/Desktop/Testun/ProjetDataPipeline.csv", header=True)
