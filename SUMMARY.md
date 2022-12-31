@@ -1,11 +1,6 @@
 # Table of contents
 
-* [👋 Welcome to A Product](README.md)
-
-## Overview
-
-* [💡 What we do](overview/what-we-do.md)
-* [✨ Our Features](overview/our-features.md)
+* [😎 Projet : Data Pipeline](README.md)
 
 ## Product Guides
 
