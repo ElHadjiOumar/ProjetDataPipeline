@@ -6,40 +6,17 @@ from pyspark.sql.functions import round
 spark = SparkSession.builder.getOrCreate()
 
 # Lecture du ficier JSON transformé en CSV via le flux Nifi 
-df_elections = spark.read.csv("election_22.csv", header="True", inferSchema=True)
+df_elections = spark.read.csv("ProjetDataPipeline/election_22.csv", header="True", inferSchema=True)
 
-# Suppression des colonnes ne portant pas de plus values sur notre analyse des élections 2022
-df_elections = df_elections.drop(
-    "Abstentions_ins",
-    "Votants_ins",
-    "Blancs_ins",
-    "Blancs_vot",
-    "Nuls_ins",
-    "Nuls_vot",
-    "Exprimés_ins",
-    "Exprimés_vot",
-    "ARTHAUD.ins",
-    "ROUSSEL.ins",
-    "MACRON.ins",
-    "LASSALLE.ins",
-    "LE PEN.ins",
-    "ZEMMOUR.ins",
-    "MÉLENCHON.ins",
-    "HIDALGO.ins",
-    "JADOT.ins",
-    "PÉCRESSE.ins",
-    "POUTOU.ins",
-    "DUPONT-AIGNAN.ins",
-)
 
-# Changement du nom de la colonne pur avoir un key entre les fichiers
+# Changement du nom de la colonne pour avoir un key entre les fichiers
 df_elections = df_elections.withColumnRenamed("CodeDépartement","code")
 
 # Changement du type de la colonne au format integer
 df_elections = df_elections.withColumn("code",df_elections.code.cast("Integer"))
 
 # Lecture du deuxième CSV récupéré via le flux Nifi
-df_chomage = spark.read.csv("chomage.csv", header="True", inferSchema=True)
+df_chomage = spark.read.csv("ProjetDataPipeline/chomage.csv", header="True", inferSchema=True)
 
 # Changement du nom de la colonne
 df_chomage = df_chomage.withColumnRenamed("Code","code")
@@ -72,7 +49,7 @@ df_chomage = df_chomage.withColumnRenamed("T1_2022","TxChômage_T1_22")
 df_chomage = df_chomage.withColumnRenamed("T2_2022","TxChômage_T2_22")
 
 # Lecture du troisième CSV récupéré via le flux Nifi
-df_niveau_de_vie = spark.read.csv("niveau_vie.csv", header="True", inferSchema=True)
+df_niveau_de_vie = spark.read.csv("ProjetDataPipeline/niveau_vie.csv", header="True", inferSchema=True)
 
 # Changement du nom de la colonne
 df_niveau_de_vie = df_niveau_de_vie.withColumnRenamed("Code","code")
@@ -101,4 +78,4 @@ df = df.withColumn("PÉCRESSE_exp", round("PÉCRESSE_exp", 2))
 df = df.withColumn("POUTOU_exp", round("POUTOU_exp", 2))
 df = df.withColumn("DUPONT-AIGNAN_exp", round("DUPONT-AIGNAN_exp", 2))
 
-df.coalesce(1).write.csv("/home/alexandre/Desktop/Testun/ProjetDataPipeline.csv", header=True)
+df.coalesce(1).write.csv("ProjetDataPipeline/ProjetDataPipeline.csv", header=True)
