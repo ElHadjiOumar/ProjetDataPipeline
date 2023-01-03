@@ -55,7 +55,7 @@ Dans le but d'automatiser notre flot de données, nous avons utilisés deux DAGs
 
 - Le premier se déclenche pour effectuer la préparation des données, fusionner les datasets et créer dossier comprenant un fichier csv final  
 
-- Le second se déclenche pour lire le fichier csv créer précedemment et pour lancer des fichiers spark d'analyse 
+- Le second se déclenche pour lire le fichier csv généré précedemment et pour lancer des fichiers spark d'analyse 
 
 
 ## Applications supplémentaires:
