@@ -42,16 +42,20 @@ Les process group collectent les données des API créé précédemment .
 
 Une fois les données collectées, nous avons procédés à la création d'un dataset regroupant les outputs de nos différents batchs pour créer un fichier final pour chaque candidat.
 
-Nous avons effectués plusieurs opérations moyennant principalement `Pyspark` sur les données collectés via twitter et ceux des élections présidentielles de 2017 tel que:
+Nous avons effectués plusieurs opérations moyennant principalement `Pyspark` sur les données collectés des élections présidentielles de 2022 tel que:
 
-- Suppression de collones.
-- etc
+- Import des fichiers en dataframes
+- Suppression de colonnes
+- Fusion de dataframes  
+- Sortie d'un fichier au format CSV
 
 ##  Orchestration et automatisation du Data Pipeline.
 
 Dans le but d'automatiser notre flot de données, nous avons utilisés deux DAGs sur Airflow:
 
-- Le premier se déclenche chaque 30 minutes pour effectuer les traitements nécessaires à l'obtention et le traitement des données propres à chaque candidat.
+- Le premier se déclenche pour effectuer les traitements nécessaires à l'obtention et le traitement des données propres et de création d'un dossier comprenant le fichier de sortie avec les dataframes fusionnés.
+
+- Le second se déclenche pour 
 
 
 ## Applications supplémentaires:
