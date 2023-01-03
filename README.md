@@ -53,7 +53,7 @@ Nous avons effectués plusieurs opérations moyennant principalement `Pyspark` s
 
 Dans le but d'automatiser notre flot de données, nous avons utilisés deux DAGs sur Airflow:
 
-- Le premier se déclenche pour effectuer la préparation des données, fusionner les datasets et créer un fichier csv final  
+- Le premier se déclenche pour effectuer la préparation des données, fusionner les datasets et créer dossier comprenant un fichier csv final  
 
 - Le second se déclenche pour lire le fichier csv créer précedemment et pour lancer des fichiers spark d'analyse 
 
