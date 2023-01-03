@@ -20,30 +20,6 @@ def main_function():
     # Lecture du ficier JSON transformé en CSV via le flux Nifi 
     df_elections = spark.read.csv("election_22.csv", header="True", inferSchema=True)
 
-    # Suppression des colonnes ne portant pas de plus values sur notre analyse des élections 2022
-    df_elections = df_elections.drop(
-        "Abstentions_ins",
-        "Votants_ins",
-        "Blancs_ins",
-        "Blancs_vot",
-        "Nuls_ins",
-        "Nuls_vot",
-        "Exprimés_ins",
-        "Exprimés_vot",
-        "ARTHAUD.ins",
-        "ROUSSEL.ins",
-        "MACRON.ins",
-        "LASSALLE.ins",
-        "LE PEN.ins",
-        "ZEMMOUR.ins",
-        "MÉLENCHON.ins",
-        "HIDALGO.ins",
-        "JADOT.ins",
-        "PÉCRESSE.ins",
-        "POUTOU.ins",
-        "DUPONT-AIGNAN.ins",
-    )
-
     # Changement du nom de la colonne pur avoir un key entre les fichiers
     df_elections = df_elections.withColumnRenamed("CodeDépartement","code")
 
