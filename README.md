@@ -53,7 +53,7 @@ Nous avons effectués plusieurs opérations moyennant principalement `Pyspark` s
 
 Dans le but d'automatiser notre flot de données, nous avons utilisés deux DAGs sur Airflow:
 
-- Le premier se déclenche pour effectuer les traitements des données et crée ensuite un dossier comprenant le fichier de sortie au foramt CSV avec les dataframes fusionnés
+- Le premier se déclenche pour effectuer les traitements des données et crée ensuite un dossier comprenant le fichier de sortie au format CSV avec les dataframes fusionnés
 
 - Le second se déclenche pour lancer un script d'analyse de l'élection présidentielle
 
